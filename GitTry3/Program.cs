@@ -6,3 +6,6 @@ Console.WriteLine("Added ANOTHER COMMIT");
 
 string str = "New code in the Vova branch";
 int i = 0;
+int b = 4;
+
+Console.WriteLine(b/i);
