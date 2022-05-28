@@ -34,9 +34,20 @@ var resultSet = from li in list where li > 100 & li <300 select li;
 
 //Method Style
 var resultMethod = list.Where(list => list < 8 & list > 3).ToList();
+var result2 = list.Where(list => list % 2 == 0).ToList();
 
 foreach( var item in resultSet)
     Console.WriteLine( item);
 
 foreach(var item in resultMethod)
     Console.WriteLine(item);
+
+foreach (var item in result2)
+    Console.WriteLine(item);
+
+int[] aric = new int[] { 0, 0, 89, 29, 24, 17 };
+
+Console.WriteLine(aric.Max() - aric.Min());
+Console.WriteLine(aric.Max());
+Console.WriteLine(aric.Min());
+
