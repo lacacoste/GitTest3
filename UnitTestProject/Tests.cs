@@ -4,6 +4,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace UnitTestProject
 {
@@ -143,11 +144,20 @@ namespace UnitTestProject
 
         }
 
+        /// <summary>
+        /// Change the active tab to the new opened tab
+        /// </summary>
+        /// <param name="oldHandles">ReadOnlyCollection<string></param>
+        /// <param name="newHandles">ReadOnlyCollection<string></param>
         private void SwitchToNewWindow(ReadOnlyCollection<string> oldHandles, ReadOnlyCollection<string> newHandles)
         {
+            /*
             foreach (var handle in newHandles)
                 if (!oldHandles.Contains(handle))
                     this.driver.SwitchTo().Window(handle);
+            */
+
+            driver.SwitchTo().Window(newHandles.Where(handle => !oldHandles.Contains(handle)).First());
 
         }
 
@@ -161,22 +171,19 @@ namespace UnitTestProject
 
             searchInput.SendKeys("Civilization 6");
             searchInput.Submit();
-
             SwitchToNewWindow(oldHandles, driver.WindowHandles);
             oldHandles = driver.WindowHandles;
 
             var firstFoundLink = driver.FindElements(By.CssSelector("div>a.gs-title"));
             firstFoundLink[0].Click();
-
             SwitchToNewWindow(oldHandles, driver.WindowHandles);
             oldHandles = driver.WindowHandles;
-
 
             string expectedResult = "Sid Meier’s Civilization® VI on Steam";
             string actualResult = driver.Title.Trim();
 
             Assert.AreEqual(expectedResult, actualResult, $"System Expetected result is: {expectedResult}, but Actual result is:{actualResult}");
-
+       
         }
     }
 }
