@@ -2,9 +2,12 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 
 namespace UnitTestProject
 {
@@ -22,7 +25,7 @@ namespace UnitTestProject
         public void SetupMethod()
         {
             driver = new ChromeDriver();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(65);
             driver.Manage().Window.Maximize();
         }
 
@@ -37,7 +40,7 @@ namespace UnitTestProject
         public void Testic()
         {
             Console.WriteLine("First Unit test");
-           // throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
 
         [Category("Regression")]
@@ -51,7 +54,7 @@ namespace UnitTestProject
             int expetcedResult = 8;
 
             //act
-            var actualResult = Calculator.AddTwoNumbers(firstNumber,secondNumber);
+            var actualResult = Calculator.AddTwoNumbers(firstNumber, secondNumber);
 
             //assert
 
@@ -62,8 +65,8 @@ namespace UnitTestProject
         [Test]
         public void CheckIWebDriverAndIWebElements()
         {
-            
-            
+
+
             //arrange
             driver.Url = "https://kasamba.com";
 
@@ -101,7 +104,7 @@ namespace UnitTestProject
             #endregion 
             //assert
             Assert.AreEqual(expectedResult, actualResult, $"System Expetected result is: {expectedResult}, but Actual result is:{actualResult}");
-            
+
         }
 
         [Test]
@@ -121,10 +124,10 @@ namespace UnitTestProject
                 if (handle != homePageHandle)
                     driver.SwitchTo().Window(handle);
             }
-                        
+
             var firstFoundLink = driver.FindElements(By.CssSelector("div>a.gs-title"));
             var searchResultsPageHandle = driver.CurrentWindowHandle;
-            
+
             firstFoundLink[0].Click();
 
             allHandles = driver.WindowHandles;
@@ -134,7 +137,7 @@ namespace UnitTestProject
                     driver.SwitchTo().Window(handle);
             }
 
-            
+
 
 
             string expectedResult = "Sid Meier’s Civilization® VI on Steam";
@@ -183,7 +186,95 @@ namespace UnitTestProject
             string actualResult = driver.Title.Trim();
 
             Assert.AreEqual(expectedResult, actualResult, $"System Expetected result is: {expectedResult}, but Actual result is:{actualResult}");
-       
+
+        }
+
+        [Test]
+        public void DropDownElementsCountVerification()
+        {
+            driver.Url = "https://www.globalsqa.com/demo-site/select-dropdown-menu/";
+
+            var dropDownElements = driver.FindElements(By.XPath("//select/option"));
+
+            int expectedResult = 249;
+
+            Assert.AreEqual((int)expectedResult, dropDownElements.Count(), $"Expected result was {expectedResult}, but Actual result is{dropDownElements.Count()}");
+        }
+
+        [Test]
+        public void GoogleSearchResultForSeleniumVerification()
+        {
+            driver.Url = "https://www.google.com/";
+            //Thread.Sleep(500000);
+
+            try
+            {
+                var cookieAccept = driver.FindElement(By.CssSelector("div>button+button"));
+                cookieAccept.Click();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Was exception");
+            }
+
+            var searchInputElement = driver.FindElement(By.XPath("//input[@name='q']"));
+
+            //var oldHandles = driver.WindowHandles;
+
+            searchInputElement.SendKeys("Selenium");
+            searchInputElement.Submit();
+
+            var seleniumSearchResultLinkElement = driver.FindElement(By.XPath("//a[@href = 'https://www.selenium.dev/']"));
+            seleniumSearchResultLinkElement.Click();
+
+            var expectedResult = "https://www.selenium.dev/";
+
+
+            Assert.AreEqual(expectedResult, driver.Url, $"Expected result was {expectedResult}, but Actual result is{driver.Url}");
+        }
+
+        [Test]
+        public void LoginToEmailInboxUkrNet()
+        {
+            driver.Url = "https://www.ukr.net/";
+
+            var loginIFrameElement = driver.FindElement(By.XPath("//iframe[@name = 'mail widget']"));
+
+            driver.SwitchTo().Frame(loginIFrameElement);
+
+            var userNameInputElement = driver.FindElement(By.Id("id-input-login"));
+                //(By.XPath("//input[@name='login']"));
+            userNameInputElement.SendKeys("ss_keit4@ukr.net");
+            var userPasswordInputElement = driver.FindElement(By.XPath("//input[@name='password']"));
+            userPasswordInputElement.SendKeys("Ytpdjybvyt");
+            var loginSubmitButtonElement = driver.FindElement(By.CssSelector(".form__submit"));
+
+            loginSubmitButtonElement.Submit();
+
+            //Thread.Sleep(5000);
+
+        }
+
+        [Test]
+        public void DropDownVerification()
+        {
+            driver.Url = "https://www.globalsqa.com/demo-site/select-dropdown-menu/";
+
+            IWebElement dropDownElement = driver.FindElement(By.XPath("//select"));
+
+            SelectElement dropdown = new SelectElement(dropDownElement);
+            dropdown.SelectByValue("USA");
+
+            //Thread.Sleep(6000);
+        }
+
+        [Test]
+        public void ActionsVerification()
+        {
+
+            Actions actions = new Actions(driver);
+
+            actions.KeyDown(Keys.Down);
         }
     }
 }

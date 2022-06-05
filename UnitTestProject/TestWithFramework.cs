@@ -25,14 +25,13 @@ namespace UnitTestProject
         public void VerifyUkrNetSearch()
         {
             driver.Url = "https://www.ukr.net/";
+            UkrNetHomePage homePage = new UkrNetHomePage(driver);
 
             var oldHandles = driver.WindowHandles;
-            var searchInput = driver.FindElement(By.Id("search-input"));
-
-            searchInput.SendKeys("Civilization 6");
-            searchInput.Submit();
-            driver.SwitchToNewWindow(oldHandles, driver.WindowHandles);
             
+            homePage.SearchInputField.SendKeys("Civilization 6");
+            homePage.SearchInputField.Submit();
+            driver.SwitchToNewWindow(oldHandles, driver.WindowHandles);
             oldHandles = driver.WindowHandles;
 
             var firstFoundLink = driver.FindElements(By.CssSelector("div>a.gs-title"));
@@ -44,9 +43,9 @@ namespace UnitTestProject
             string actualResult = driver.Title.Trim();
 
             Assert.AreEqual(expectedResult, actualResult, $"System Expetected result is: {expectedResult}, but Actual result is:{actualResult}");
-
-
         }
+
+
 
         [TearDown]
         public void AfterEachTest()
