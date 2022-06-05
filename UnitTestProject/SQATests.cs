@@ -39,6 +39,7 @@ namespace UnitTestProject
 
             //Act
             driver.SwitchTo().Frame(page.photoManagerIFrame);
+            
             Actions action = new Actions(driver);
             action.DragAndDrop(page.firstImageHeaderElement,page.trashElement).Perform();
 
@@ -46,7 +47,21 @@ namespace UnitTestProject
             var actualCount = page.imagesInTheTrashElements.Count();
             var expectedCount = 1;
 
-            Assert.AreEqual(expectedCount, actualCount, $"The Expected result is {expectedCount}, but the actual result is {actualCount}");          
+            string imageAltExpected = "The peaks of High Tatras";
+            IWebElement imgInTrash = driver.FindElement(By.CssSelector("#trash img"));
+            string imgAltActual = imgInTrash.GetAttribute("alt");
+
+
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(expectedCount, actualCount, $"The Expected result is {expectedCount}, but the actual result is {actualCount}");
+                Assert.AreEqual(imageAltExpected,imgAltActual, $"The Expected image alt is: {imageAltExpected},but actual is: {imgAltActual}");
+            }
+
+            );
+
+                      
         }
 
     }
