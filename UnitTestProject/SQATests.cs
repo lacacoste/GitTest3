@@ -51,7 +51,7 @@ namespace UnitTestProject
             IWebElement imgInTrash = driver.FindElement(By.CssSelector("#trash img"));
             string imgAltActual = imgInTrash.GetAttribute("alt");
 
-
+            Warn.Unless(5 == 4, "Warning message for 4==5");
 
             Assert.Multiple(() =>
             {
