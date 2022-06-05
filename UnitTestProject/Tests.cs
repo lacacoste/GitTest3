@@ -274,7 +274,14 @@ namespace UnitTestProject
 
             Actions actions = new Actions(driver);
 
-            actions.KeyDown(Keys.Down);
+            actions.KeyDown(Keys.Down).KeyUp(Keys.Down).Perform();
+
+            // Build ()
+
+            IAction chain = actions.KeyDown(Keys.Down).KeyUp(Keys.Down).Build();
+
+            chain.Perform();
+
         }
     }
 }

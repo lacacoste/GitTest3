@@ -49,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\WebDriverExtensionscs.cs" />
+    <Compile Include="Pages\GlobalSQABasePage.cs" />
+    <Compile Include="Pages\GlobalSQADragAndDropPage.cs" />
     <Compile Include="Pages\UkrNetHomePage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
